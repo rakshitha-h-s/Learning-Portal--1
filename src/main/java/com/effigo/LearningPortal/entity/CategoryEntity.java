@@ -21,13 +21,6 @@ import lombok.NoArgsConstructor;
 public class CategoryEntity {
 	@Id
 	private Long category_id;
-	public Long getCategory_id() {
-		return category_id;
-	}
-
-	public void setCategory_id(Long category_id) {
-		this.category_id = category_id;
-	}
 	@Enumerated(EnumType.STRING)
     private CategoryType category_Type; 
 	@CreationTimestamp
@@ -43,17 +36,10 @@ public class CategoryEntity {
     public void onCreate() {
         this.createdOn = LocalDateTime.now();
     }
-    public LocalDateTime getCreatedOn() {
-        return createdOn;
-    }
 
     public void setCreatedOn(LocalDateTime createdOn) {
         this.createdOn = createdOn;
     }
-
-	public void setCategory_Type(CategoryType category_Type) {
-		this.category_Type = category_Type;
-	}
 	public enum CategoryType {
     JAVA,
     SQL,

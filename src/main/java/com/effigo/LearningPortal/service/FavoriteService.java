@@ -2,7 +2,6 @@ package com.effigo.LearningPortal.service;
 
 import java.util.List;
 import java.util.Optional;
-
 import com.effigo.LearningPortal.dto.request.FavoriteEntityrequest;
 import com.effigo.LearningPortal.dto.response.FavoriteEntityresponse;
 import com.effigo.LearningPortal.entity.FavoriteEntity;
