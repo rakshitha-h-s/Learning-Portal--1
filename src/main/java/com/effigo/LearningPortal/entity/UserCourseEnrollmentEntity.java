@@ -1,20 +1,14 @@
 package com.effigo.LearningPortal.entity;
-
-import java.sql.Date;
 import java.time.LocalDateTime;
-
+import java.time.format.DateTimeFormatter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -77,6 +71,20 @@ public class UserCourseEnrollmentEntity {
 
     public void setCreatedOn(LocalDateTime createdOn) {
         this.createdOn = createdOn;
+    }
+    public String getFormattedCreatedOn() {
+    	if (createdOn == null) {
+            return "";
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
+        return createdOn.format(formatter);
+    }
+    public String getFormattedUpdatedOn() {
+    	if (updatedOn == null) {
+            return "";
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
+        return updatedOn.format(formatter);
     }
 	
 }

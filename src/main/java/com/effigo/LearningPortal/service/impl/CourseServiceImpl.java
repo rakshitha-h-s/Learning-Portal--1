@@ -2,21 +2,12 @@ package com.effigo.LearningPortal.service.impl;
 
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.effigo.LearningPortal.dto.mapper.CategoryEntityMapper;
 import com.effigo.LearningPortal.dto.mapper.CourseEntityMapper;
-import com.effigo.LearningPortal.dto.mapper.FavoriteEntityMapper;
 import com.effigo.LearningPortal.dto.request.CourseEntityrequest;
 import com.effigo.LearningPortal.dto.response.CourseEntityResponse;
-import com.effigo.LearningPortal.entity.CategoryEntity;
 import com.effigo.LearningPortal.entity.CourseEntity;
-import com.effigo.LearningPortal.entity.FavoriteEntity;
-import com.effigo.LearningPortal.entity.UserEntity;
 import com.effigo.LearningPortal.repository.CourseEntityRepository;
-import com.effigo.LearningPortal.repository.UserCourseEnrollmentRepository;
-import com.effigo.LearningPortal.repository.UserEntityRepository;
 import com.effigo.LearningPortal.service.CourseService;
 import jakarta.transaction.Transactional;
 @Service

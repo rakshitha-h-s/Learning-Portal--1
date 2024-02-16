@@ -23,11 +23,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/userentity")
 public class UserEntityController {
 	private final UserEntityService userService;
-	private final CourseService courseservice;
 
 	public UserEntityController(UserEntityService userService, CourseService courseservice) {
 		this.userService = userService;
-		this.courseservice = courseservice;
 	}
 
 	@GetMapping
@@ -55,7 +53,7 @@ public class UserEntityController {
 			@PathVariable("id") Long id) {
 		return userService.updateUserEntity(userRequest, id);
 	}
-
+    //"Admin" can create user accounts
 	@PostMapping("/{usertype}/{id}/{password}")
 	public UserEntityresponse saveUserEntityResponse1(@RequestBody UserEntityrequest userRequest,
 			@PathVariable("usertype") UserType usertype, @PathVariable("id") Long id,
@@ -70,7 +68,7 @@ public class UserEntityController {
 		return userService.saveCourseEntity1(userrequest, usertype, id, password);
 	}
 
-	@PostMapping("/updatecourse/{usertype}/{id}/{password}/{courseid}")
+	@PutMapping("/updatecourse/{usertype}/{id}/{password}/{courseid}")
 	public CourseEntityResponse updateCourseEntityResponse(@RequestBody CourseEntityrequest userrequest,
 			@PathVariable("usertype") UserType usertype, @PathVariable("id") Long id,
 			@PathVariable("password") String password, @PathVariable("courseid") Long courseid) {
@@ -82,4 +80,5 @@ public class UserEntityController {
 			@PathVariable("username") String username, @PathVariable("course_id") Long course_id) {
 		return userService.saveFavoriteEntity(usertype, username, course_id);
 	}
+	
 }

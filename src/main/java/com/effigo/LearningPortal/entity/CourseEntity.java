@@ -1,28 +1,14 @@
 package com.effigo.LearningPortal.entity;
-import java.sql.Date;
 import java.time.LocalDateTime;
-import java.util.Map;
-
+import java.time.format.DateTimeFormatter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -84,4 +70,19 @@ public class CourseEntity {
 	    public void onCreate() {
 	        this.createdOn = LocalDateTime.now();
 	    }
+	    public String getFormattedCreatedOn() {
+	    	if (createdOn == null) {
+	            return "";
+	        }
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
+	        return updatedOn.format(formatter);
+	    }
+	    public String getFormattedUpdatedOn() {
+	    	if (updatedOn == null) {
+	            return "";
+	        }
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
+	        return updatedOn.format(formatter);
+	    }
+	    
 }

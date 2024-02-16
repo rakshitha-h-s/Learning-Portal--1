@@ -3,17 +3,12 @@ package com.effigo.LearningPortal.service.impl;
 import java.util.List;
 
 import java.util.Optional;
-
 import org.springframework.stereotype.Service;
-
 import com.effigo.LearningPortal.dto.mapper.CategoryEntityMapper;
-import com.effigo.LearningPortal.dto.mapper.UserEntityMapper;
 import com.effigo.LearningPortal.dto.request.CategoryEntityrequest;
 import com.effigo.LearningPortal.dto.response.CategoryEntityresponse;
 import com.effigo.LearningPortal.entity.CategoryEntity;
-import com.effigo.LearningPortal.entity.UserEntity;
 import com.effigo.LearningPortal.repository.CategoryEntityRepository;
-import com.effigo.LearningPortal.repository.UserEntityRepository;
 import com.effigo.LearningPortal.service.CategoryService;
 
 import jakarta.transaction.Transactional;

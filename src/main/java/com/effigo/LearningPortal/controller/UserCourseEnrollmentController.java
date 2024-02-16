@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.effigo.LearningPortal.dto.request.UserCourseEnrollmentrequest;
-import com.effigo.LearningPortal.dto.request.UserEntityrequest;
 import com.effigo.LearningPortal.dto.response.UserCourseEnrollmentresponse;
-import com.effigo.LearningPortal.dto.response.UserEntityresponse;
 import com.effigo.LearningPortal.entity.UserCourseEnrollmentEntity;
 import com.effigo.LearningPortal.service.UserCourseEnrollmentService;
 @RestController

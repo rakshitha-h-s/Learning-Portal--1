@@ -12,13 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.effigo.LearningPortal.dto.request.FavoriteEntityrequest;
-import com.effigo.LearningPortal.dto.request.UserEntityrequest;
 import com.effigo.LearningPortal.dto.response.FavoriteEntityresponse;
-import com.effigo.LearningPortal.dto.response.UserEntityresponse;
 import com.effigo.LearningPortal.entity.FavoriteEntity;
-import com.effigo.LearningPortal.entity.UserEntity;
 import com.effigo.LearningPortal.service.FavoriteService;
-import com.effigo.LearningPortal.service.UserEntityService;
 
 @RestController
 @RequestMapping("/favorite")

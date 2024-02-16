@@ -1,5 +1,4 @@
 package com.effigo.LearningPortal.service.impl;
-
 import com.effigo.LearningPortal.dto.mapper.CourseEntityMapper;
 import com.effigo.LearningPortal.dto.mapper.UserEntityMapper;
 import com.effigo.LearningPortal.dto.request.CourseEntityrequest;
@@ -37,13 +36,10 @@ public class UserEntityServiceImpl implements UserEntityService{
 	public List<UserEntity> findAllUser() {
 		return userentityRepository.findAll();
 	}
-
 	@Override
 	public Optional<UserEntity> findById(Long id) {
 		return userentityRepository.findById(id);
 	}
-
-
 	@Override
 	public void deleteUserentity(Long id) {
 		userentityRepository.deleteById(id);
@@ -133,7 +129,8 @@ public class UserEntityServiceImpl implements UserEntityService{
         return CourseEntityMapper.MAPPER.fromEntityToResponse(userEntity);
     }
     @Override
-    public String saveFavoriteEntity(UserType usertype,String username,Long courseid) {
+    public String saveFavoriteEntity(UserType usertype,String username,Long courseid) 
+    {
     	if (usertype != UserType.LEARNER) {
             throw new IllegalArgumentException("Only LEARNER are allowed to perform this operation.");
         }
@@ -145,7 +142,7 @@ public class UserEntityServiceImpl implements UserEntityService{
             throw new IllegalArgumentException("learner with ID " + id + " not found.");
         }   
         if (user.getUserType() != UserType.LEARNER) {
-            throw new IllegalArgumentException("User with ID " + id + " is not an learner user.");
+            throw new IllegalArgumentException("User with ID " + id + " is not an learner .");
         }
         Optional<CourseEntity> userOptiona1 = courseentityrepository.findById(courseid);
         CourseEntity course = userOptiona1.get();
@@ -153,16 +150,16 @@ public class UserEntityServiceImpl implements UserEntityService{
        fav.setCourse_id(course);
     	fav.setU_id(user);
     	favoriteentity.save(fav);
-    	return "favorite added"+fav.getCourse_id()+fav.getF_id();
+    	return "favorite added";
 	}
     @Autowired
     private UserEntityRepository userRepository;
-
     public Long isValidUser(String username) {
         Optional<UserEntity> userOptional = userRepository.findByUsername(username);
         UserEntity user=userOptional.get();
         return user.getU_id();
     }
+    
 }
 
 

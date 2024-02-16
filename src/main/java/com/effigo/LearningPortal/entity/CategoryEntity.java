@@ -1,24 +1,14 @@
 package com.effigo.LearningPortal.entity;
-
-import java.sql.Date;
 import java.time.LocalDateTime;
-
+import java.time.format.DateTimeFormatter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
-import com.effigo.LearningPortal.entity.CategoryEntity.CategoryType;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -69,5 +59,19 @@ public class CategoryEntity {
     SQL,
     OOPS,
     SPA
-}	
+}
+	public String getFormattedCreatedOn() {
+		if (createdOn == null) {
+	        return "";
+	    }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
+        return createdOn.format(formatter);
+    }
+	public String getFormattedUpdatedOn() {
+    	if (updatedOn == null) {
+            return "";
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
+        return updatedOn.format(formatter);
+    }
 }

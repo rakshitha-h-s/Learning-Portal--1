@@ -1,25 +1,18 @@
 package com.effigo.LearningPortal.entity;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+
 import lombok.NoArgsConstructor;
 @Entity
 @Data
@@ -31,7 +24,7 @@ public class UserEntity {
 	    private Long u_id;
 		private String username;
         private String password;	    
-	    public Long getU_id() {
+		public Long getU_id() {
 			return u_id;
 		}
 
@@ -65,18 +58,32 @@ public class UserEntity {
 	        this.createdOn = createdOn;
 	    }
 
-	    // Custom method to get createdOn field in "MM/DD/YYYY HH:MM" format
+	    // method to get createdOn field in "MM/DD/YYYY HH:MM" format
 	    public String getFormattedCreatedOn() {
+	    	if (createdOn == null) {
+	            return "";
+	        }
 	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
 	        return createdOn.format(formatter);
 	    }
-	    private String formatDateTime(LocalDateTime dateTime) {
+	    public String getFormattedUpdatedOn() {
+	    	if (updatedOn == null) {
+	            return "";
+	        }
 	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
-	        return dateTime.format(formatter);
+	        return updatedOn.format(formatter);
 	    }
 	public String getUsername() {
 			return username;
 		}
+
+		public LocalDateTime getUpdatedOn() {
+		return updatedOn;
+	}
+
+	public void setUpdatedOn(LocalDateTime updatedOn) {
+		this.updatedOn = updatedOn;
+	}
 
 		public void setUsername(String username) {
 			this.username = username;

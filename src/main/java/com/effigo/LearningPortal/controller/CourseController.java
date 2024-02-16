@@ -11,15 +11,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.effigo.LearningPortal.dto.request.CourseEntityrequest;
-import com.effigo.LearningPortal.dto.request.UserEntityrequest;
 import com.effigo.LearningPortal.dto.response.CourseEntityResponse;
-import com.effigo.LearningPortal.dto.response.UserEntityresponse;
 import com.effigo.LearningPortal.entity.CourseEntity;
-import com.effigo.LearningPortal.entity.UserEntity;
 import com.effigo.LearningPortal.service.CourseService;
-import com.effigo.LearningPortal.service.UserEntityService;
 
 @RestController
 @RequestMapping("/course")
