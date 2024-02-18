@@ -5,6 +5,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -24,15 +26,15 @@ import lombok.Setter;
 @Setter
 public class UserCourseEnrollmentEntity {
 	@Id
-	private Long enrollment_id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long enrollmentId;
 	@ManyToOne
-	@JoinColumn(name = "u_id",referencedColumnName="u_id")
-	private UserEntity u_id;
+	@JoinColumn(name = "uId",referencedColumnName="uId")
+	private UserEntity uId;
 	@ManyToOne
-	@JoinColumn(name = "course_id",referencedColumnName="course_id")
-	private CourseEntity course_id;
-	@Column(nullable=false,unique=true)
-	private String enrollment_date;
+	@JoinColumn(name = "courseId",referencedColumnName="courseId")
+	private CourseEntity courseId;
+	
     @CreationTimestamp
     @Column(name = "created_on", nullable = false, updatable = false)
     private LocalDateTime createdOn;

@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoryEntityrequest implements Serializable{
-	private Long course_id;
+	private Long courseId;
 	private String name;
 }

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserEntityresponse implements Serializable {
-	private Long u_id;
+	private Long uId;
 	private String username;
     private String password;	    
 	private UserType userType;

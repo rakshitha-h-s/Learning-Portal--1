@@ -35,7 +35,6 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 <dependency>
     <groupId>org.projectlombok</groupId>
     <artifactId>lombok</artifactId>
@@ -47,7 +46,7 @@
         <groupId>org.mapstruct</groupId>
         <artifactId>mapstruct</artifactId>
         <version>1.4.2.Final</version> <!-- Replace with the latest version -->
-    </dependency>
+</dependency>
  
 <dependency>
 	<groupId>org.mapstruct</groupId>
@@ -55,6 +54,10 @@
 	<version>1.4.2.Final</version>
 </dependency>
 
+<dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-logging</artifactId>       
+</dependency>
 		<dependency>
 			<groupId>com.effigo</groupId>
 			<artifactId>employee2-management</artifactId>

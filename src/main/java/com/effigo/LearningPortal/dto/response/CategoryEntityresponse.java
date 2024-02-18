@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoryEntityresponse implements Serializable{
-	private Long category_id;
+	private Long categoryId;
 	private String name;
 }

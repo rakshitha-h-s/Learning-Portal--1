@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FavoriteEntityrequest implements Serializable {
-	private Long f_id;
-	private UserEntity u_id;
-	private CourseEntity course_id;
+	private Long fId;
+	private UserEntity uId;
+	private CourseEntity courseId;
 }

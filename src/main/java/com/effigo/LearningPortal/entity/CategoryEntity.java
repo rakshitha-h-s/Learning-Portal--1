@@ -20,17 +20,17 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CategoryEntity {
 	@Id
-	private Long category_id;
+	private Long categoryId;
 	@Enumerated(EnumType.STRING)
-    private CategoryType category_Type; 
+    private CategoryType categoryType; 
 	@CreationTimestamp
     @Column(name = "created_on", nullable = false, updatable = false)
     private LocalDateTime createdOn;
     @UpdateTimestamp
     @Column(name = "updated_on", nullable = false)
     private LocalDateTime updatedOn;
-	public CategoryType getCategory_Type() {
-		return category_Type;
+	public CategoryType getCategoryType() {
+		return categoryType;
 	}
 	@PrePersist
     public void onCreate() {

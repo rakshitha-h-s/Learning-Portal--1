@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CourseEntityrequest implements Serializable {
-	private Long course_id;
-	private String course_name;
+	private Long courseId;
+	private String courseName;
     private CategoryEntity category;
-    private UserEntity u_id;
+    private UserEntity uId;
 }

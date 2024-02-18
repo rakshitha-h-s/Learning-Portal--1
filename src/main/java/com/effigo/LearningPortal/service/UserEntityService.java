@@ -5,6 +5,7 @@ import java.util.Optional;
 import com.effigo.LearningPortal.dto.request.CourseEntityrequest;
 import com.effigo.LearningPortal.dto.request.UserEntityrequest;
 import com.effigo.LearningPortal.dto.response.CourseEntityResponse;
+import com.effigo.LearningPortal.dto.response.UserCourseEnrollmentresponse;
 import com.effigo.LearningPortal.dto.response.UserEntityresponse;
 import com.effigo.LearningPortal.entity.UserEntity;
 import com.effigo.LearningPortal.entity.UserEntity.UserType;
@@ -19,5 +20,6 @@ UserEntityresponse saveUserEntity1(UserEntityrequest userentityrequest,UserType 
 CourseEntityResponse saveCourseEntity1(CourseEntityrequest courseentityrequest,UserType usertype,Long id,String password);
 CourseEntityResponse updateCourseEntity1(CourseEntityrequest courseentityrequest,UserType usertype,Long id,String password,Long courseid);
 String saveFavoriteEntity(UserType usertype, String username, Long courseid);
+String courseenrollment(UserType username,String username1,Long courseid);
 }
 

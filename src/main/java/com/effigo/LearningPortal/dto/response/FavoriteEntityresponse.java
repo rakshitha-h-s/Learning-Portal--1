@@ -14,8 +14,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FavoriteEntityresponse implements Serializable{
-	private CourseEntity course_id;
-	private Long f_id;
-	private UserEntity u_id;
+	private CourseEntity courseId;
+	private Long fId;
+	private UserEntity uId;
 
 }

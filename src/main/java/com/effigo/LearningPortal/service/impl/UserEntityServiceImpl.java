@@ -1,4 +1,8 @@
 package com.effigo.LearningPortal.service.impl;
+
+import java.util.List;
+import java.util.Optional;
+import org.springframework.stereotype.Service;
 import com.effigo.LearningPortal.dto.mapper.CourseEntityMapper;
 import com.effigo.LearningPortal.dto.mapper.UserEntityMapper;
 import com.effigo.LearningPortal.dto.request.CourseEntityrequest;
@@ -7,161 +11,196 @@ import com.effigo.LearningPortal.dto.response.CourseEntityResponse;
 import com.effigo.LearningPortal.dto.response.UserEntityresponse;
 import com.effigo.LearningPortal.entity.CourseEntity;
 import com.effigo.LearningPortal.entity.FavoriteEntity;
+import com.effigo.LearningPortal.entity.UserCourseEnrollmentEntity;
 import com.effigo.LearningPortal.entity.UserEntity;
 import com.effigo.LearningPortal.entity.UserEntity.UserType;
 import com.effigo.LearningPortal.repository.CourseEntityRepository;
 import com.effigo.LearningPortal.repository.FavoriteEntityRepository;
+import com.effigo.LearningPortal.repository.UserCourseEnrollmentRepository;
 import com.effigo.LearningPortal.repository.UserEntityRepository;
-import com.effigo.LearningPortal.service.CourseService;
 import com.effigo.LearningPortal.service.UserEntityService;
+
 import jakarta.transaction.Transactional;
-import java.util.List;
-import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 @Transactional
-public class UserEntityServiceImpl implements UserEntityService{
-	
+public class UserEntityServiceImpl implements UserEntityService {
 	private final UserEntityRepository userentityRepository;
 	private final CourseEntityRepository courseentityrepository;
 	private final FavoriteEntityRepository favoriteentity;
-	public UserEntityServiceImpl(UserEntityRepository userentityRepository, CourseEntityRepository courseentityrepository,CourseService courseservice,FavoriteEntityRepository favoriteentity)
-	{
-		this.userentityRepository=userentityRepository;
+	private final UserCourseEnrollmentRepository enrollentity;
+
+	public UserEntityServiceImpl(UserEntityRepository userentityRepository,
+			CourseEntityRepository courseentityrepository, FavoriteEntityRepository favoriteentity,
+			UserCourseEnrollmentRepository enrollentity) {
+		this.userentityRepository = userentityRepository;
 		this.courseentityrepository = courseentityrepository;
 		this.favoriteentity = favoriteentity;
+		this.enrollentity = enrollentity;
 	}
+
 	@Override
 	public List<UserEntity> findAllUser() {
 		return userentityRepository.findAll();
 	}
+
 	@Override
 	public Optional<UserEntity> findById(Long id) {
 		return userentityRepository.findById(id);
 	}
+
 	@Override
 	public void deleteUserentity(Long id) {
 		userentityRepository.deleteById(id);
 	}
+
 	@Override
 	public UserEntityresponse saveUserEntity(UserEntityrequest userentityrequest) {
-		
+
 		UserEntity userEntity = UserEntityMapper.MAPPER.fromRequestToEntity(userentityrequest);
-        userentityRepository.save(userEntity);
-        return UserEntityMapper.MAPPER.fromEntityToResponse(userEntity);
+		userentityRepository.save(userEntity);
+		return UserEntityMapper.MAPPER.fromEntityToResponse(userEntity);
 	}
 
 	@Override
 	public UserEntityresponse updateUserEntity(UserEntityrequest userentityrequest, Long id) {
 		Optional<UserEntity> checkExistinguser = findById(id);
-        if (! checkExistinguser.isPresent())
-            throw new RuntimeException("User Id "+ id + " Not Found!");
-
-        UserEntity userEntity = UserEntityMapper.MAPPER.fromRequestToEntity(userentityrequest);
-        userentityRepository.save(userEntity);
-        return UserEntityMapper.MAPPER.fromEntityToResponse(userEntity);
+		if (!checkExistinguser.isPresent())
+			log.error("user is not present");
+		UserEntity userEntity = UserEntityMapper.MAPPER.fromRequestToEntity(userentityrequest);
+		userentityRepository.save(userEntity);
+		return UserEntityMapper.MAPPER.fromEntityToResponse(userEntity);
 	}
 
-    @Override
-    public UserEntityresponse saveUserEntity1(UserEntityrequest userentityrequest,UserType usertype,Long id,String password)
-    {
-    	   if (usertype != UserType.ADMIN) {
-               throw new IllegalArgumentException("Only ADMIN users are allowed to perform this operation.");
-           }
-           Optional<UserEntity> userOptional = userentityRepository.findById(id);
-           UserEntity user = userOptional.get();
-           if (user.getU_id()!=id) {
-               throw new IllegalArgumentException("ADMIN with ID " + id + " not found.");
-           }  
-           if (user.getUserType() != UserType.ADMIN) {
-               throw new IllegalArgumentException("User with ID " + id + " is not an admin user.");
-           }
-           if(!user.getPassword().equals(password)) {
-        	   throw new IllegalArgumentException("Password of ADMIN is incorrect");
-           }
-         UserEntity userEntity = UserEntityMapper.MAPPER.fromRequestToEntity(userentityrequest);
-         userentityRepository.save(userEntity);
-         return UserEntityMapper.MAPPER.fromEntityToResponse(userEntity);
-    }
-    @Override
-    public CourseEntityResponse saveCourseEntity1(CourseEntityrequest courserequest,UserType usertype,Long id,String password) {
-    	if (usertype != UserType.AUTHOR) {
-            throw new IllegalArgumentException("Only ADMIN users are allowed to perform this operation.");
-        }
-        Optional<UserEntity> userOptional = userentityRepository.findById(id);
-        UserEntity user = userOptional.get();
-        if (user.getU_id()!=id) {
-            throw new IllegalArgumentException("AUTHOR with ID " + id + " not found.");
-        }   
-        if (user.getUserType() != UserType.AUTHOR) {
-            throw new IllegalArgumentException("User with ID " + id + " is not an author user.");
-        }
-        if(!user.getPassword().equals(password)) {
-     	   throw new IllegalArgumentException("Password of AUTHOR is incorrect");
-        }
-        CourseEntity userEntity = CourseEntityMapper.MAPPER.fromRequestToEntity(courserequest);
-        courseentityrepository.save(userEntity);
-        return CourseEntityMapper.MAPPER.fromEntityToResponse(userEntity);	
-    }
-    @Override
-    public CourseEntityResponse updateCourseEntity1(CourseEntityrequest courserequest,UserType usertype,Long id,String password,Long courseid) {
-    	if (usertype != UserType.AUTHOR) {
-            throw new IllegalArgumentException("Only ADMIN users are allowed to perform this operation.");
-        }
-        Optional<UserEntity> userOptional = userentityRepository.findById(id);
-        UserEntity user = userOptional.get();
-        if (user.getU_id()!=id) {
-            throw new IllegalArgumentException("AUTHOR with ID " + id + " not found.");
-        } 
-        if (user.getUserType() != UserType.AUTHOR) {
-            throw new IllegalArgumentException("User with ID " + id + " is not an author user.");
-        }
-        if(!user.getPassword().equals(password)) {
-     	   throw new IllegalArgumentException("Password of AUTHOR is incorrect");
-        }
-        Optional<CourseEntity> checkExistinguser = courseentityrepository.findById(courseid);
-        if (! checkExistinguser.isPresent())
-            throw new RuntimeException("Course Id "+ courseid + " Not Found!");
-
-        CourseEntity userEntity = CourseEntityMapper.MAPPER.fromRequestToEntity(courserequest);
-        courseentityrepository.save(userEntity);
-        return CourseEntityMapper.MAPPER.fromEntityToResponse(userEntity);
-    }
-    @Override
-    public String saveFavoriteEntity(UserType usertype,String username,Long courseid) 
-    {
-    	if (usertype != UserType.LEARNER) {
-            throw new IllegalArgumentException("Only LEARNER are allowed to perform this operation.");
-        }
-        Long id=isValidUser(username);
-        Optional<UserEntity> userOptional = userentityRepository.findById(id);
-        UserEntity user = userOptional.get();
-        
-        if (user.getU_id()!=id) {
-            throw new IllegalArgumentException("learner with ID " + id + " not found.");
-        }   
-        if (user.getUserType() != UserType.LEARNER) {
-            throw new IllegalArgumentException("User with ID " + id + " is not an learner .");
-        }
-        Optional<CourseEntity> userOptiona1 = courseentityrepository.findById(courseid);
-        CourseEntity course = userOptiona1.get();
-       FavoriteEntity fav=new FavoriteEntity();
-       fav.setCourse_id(course);
-    	fav.setU_id(user);
-    	favoriteentity.save(fav);
-    	return "favorite added";
+	@Override
+	public UserEntityresponse saveUserEntity1(UserEntityrequest userentityrequest, UserType usertype, Long id,
+			String password) {
+		if (usertype != UserType.ADMIN) {
+			log.error("usertype is not admin");
+		}
+		Optional<UserEntity> userOptional = userentityRepository.findById(id);
+		UserEntity user = userOptional.get();
+		if (user.getUId().equals(id) && userOptional.isPresent()) {
+			log.error("ADMIN with ID " + id + " not found.");
+		}
+		if (user.getUserType() != UserType.ADMIN) {
+			log.error("User with ID " + id + " is not an admin user.");
+		}
+		if (!user.getPassword().equals(password)) {
+			log.error("Password of ADMIN is incorrect");
+		}
+		UserEntity userEntity = UserEntityMapper.MAPPER.fromRequestToEntity(userentityrequest);
+		userentityRepository.save(userEntity);
+		log.info("user entity saved");
+		return UserEntityMapper.MAPPER.fromEntityToResponse(userEntity);
 	}
-    @Autowired
-    private UserEntityRepository userRepository;
-    public Long isValidUser(String username) {
-        Optional<UserEntity> userOptional = userRepository.findByUsername(username);
-        UserEntity user=userOptional.get();
-        return user.getU_id();
-    }
-    
+
+	@Override
+	public CourseEntityResponse saveCourseEntity1(CourseEntityrequest courserequest, UserType usertype, Long id,
+			String password) {
+		if (usertype != UserType.AUTHOR) {
+			log.error("Only ADMIN users are allowed to perform this operation.");
+		}
+		Optional<UserEntity> userOptional = userentityRepository.findById(id);
+		UserEntity user = userOptional.get();
+		if (user.getUId().equals(id)) {
+			log.error("AUTHOR with ID " + id + " not found.");
+		}
+		if (user.getUserType() != UserType.AUTHOR) {
+			log.error("User with ID " + id + " is not an author user.");
+		}
+		if (!user.getPassword().equals(password)) {
+			log.error("Password of AUTHOR is incorrect");
+		}
+		CourseEntity userEntity = CourseEntityMapper.MAPPER.fromRequestToEntity(courserequest);
+		courseentityrepository.save(userEntity);
+		log.info("course saved");
+		return CourseEntityMapper.MAPPER.fromEntityToResponse(userEntity);
+	}
+
+	@Override
+	public CourseEntityResponse updateCourseEntity1(CourseEntityrequest courserequest, UserType usertype, Long id,
+			String password, Long courseid) {
+		if (usertype != UserType.AUTHOR) {
+			log.error("Only ADMIN users are allowed to perform this operation.");
+		}
+		Optional<UserEntity> userOptional = userentityRepository.findById(id);
+		UserEntity user = userOptional.get();
+		if (user.getUId().equals(id)) {
+			log.error("AUTHOR with ID " + id + " not found.");
+		}
+		if (user.getUserType().equals(UserType.AUTHOR)) {
+			log.error("User with ID " + id + " is not an author user.");
+		}
+		if (!user.getPassword().equals(password)) {
+			log.error("Password of AUTHOR is incorrect");
+		}
+		Optional<CourseEntity> checkExistinguser = courseentityrepository.findById(courseid);
+		if (!checkExistinguser.isPresent())
+			log.error("Course Id " + courseid + " Not Found!");
+
+		CourseEntity userEntity = CourseEntityMapper.MAPPER.fromRequestToEntity(courserequest);
+		courseentityrepository.save(userEntity);
+		log.info("course updated");
+		return CourseEntityMapper.MAPPER.fromEntityToResponse(userEntity);
+	}
+
+	@Override
+	public String saveFavoriteEntity(UserType usertype, String username, Long courseid) {
+		if (usertype != UserType.LEARNER) {
+			log.error("Only LEARNER are allowed to perform this operation.");
+		}
+		Long id = isValidUser(username);
+		Optional<UserEntity> userOptional = userentityRepository.findById(id);
+		UserEntity user = userOptional.get();
+		Optional<CourseEntity> courseOptiona1 = courseentityrepository.findById(courseid);
+		CourseEntity course = courseOptiona1.get();
+		if (user.getUId().equals(id)) {
+			log.error("learner with ID " + id + " not found.");
+		}
+		if (user.getUserType().equals(UserType.LEARNER)) {
+			log.error("User with ID " + id + " is not an learner .");
+		}
+
+		FavoriteEntity fav = new FavoriteEntity();
+		fav.setCourseId(course);
+		fav.setUId(user);
+		favoriteentity.save(fav);
+		return "favorite added";
+	}
+
+	private UserEntityRepository userRepository;
+
+	public Long isValidUser(String username) {
+		Optional<UserEntity> userOptional = userRepository.findByUsername(username);
+		UserEntity user = userOptional.get();
+		return user.getUId();
+	}
+
+	@Override
+	public String courseenrollment(UserType usertype, String username, Long courseid) {
+		if (usertype != UserType.LEARNER) {
+			log.error("Only LEARNER are allowed to perform this operation.");
+		}
+		Long id = isValidUser(username);
+		Optional<UserEntity> userOptional = userentityRepository.findById(id);
+		UserEntity user = userOptional.get();
+
+		if (user.getUId().equals(id)) {
+			log.error("learner with ID " + id + " not found.");
+		}
+		if (user.getUserType() != UserType.LEARNER) {
+			log.error("User with ID " + id + " is not an learner .");
+		}
+		Optional<CourseEntity> userOptiona1 = courseentityrepository.findById(courseid);
+		CourseEntity course = userOptiona1.get();
+		UserCourseEnrollmentEntity enrol = new UserCourseEnrollmentEntity();
+		enrol.setCourseId(course);
+		enrol.setUId(user);
+		enrollentity.save(enrol);
+		return "User enrolled to the course";
+	}
+
 }
-
-
-	
-

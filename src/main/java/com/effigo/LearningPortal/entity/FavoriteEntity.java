@@ -24,13 +24,13 @@ import lombok.NoArgsConstructor;
 public class FavoriteEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long f_id;
+	private Long fId;
 	@ManyToOne
-	@JoinColumn(name = "u_id",referencedColumnName="u_id")
-	private UserEntity u_id;
+	@JoinColumn(name = "uId",referencedColumnName="uId")
+	private UserEntity uId;
 	@ManyToOne
-	@JoinColumn(name = "course_id",referencedColumnName="course_id")
-	private CourseEntity course_id;
+	@JoinColumn(name = "courseId",referencedColumnName="courseId")
+	private CourseEntity courseId;
 	@CreationTimestamp
     @Column(name = "created_on", nullable = false, updatable = false)
     private LocalDateTime createdOn;

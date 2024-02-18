@@ -20,14 +20,14 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CourseEntity {
 	    @Id
-	    private Long course_id;
-	    private String course_name;
+	    private Long courseId;
+	    private String courseName;
 	    @ManyToOne
-	    @JoinColumn(name = "category_id",referencedColumnName="category_id")
+	    @JoinColumn(name = "categoryId",referencedColumnName="categoryId")
 	    private CategoryEntity category;
 	    @ManyToOne
-	    @JoinColumn(name = "u_id",referencedColumnName="u_id")
-	    private UserEntity u_id;
+	    @JoinColumn(name = "uId",referencedColumnName="uId")
+	    private UserEntity uId;
 		@CreationTimestamp
 	    @Column(name = "created_on", nullable = false, updatable = false)
 	    private LocalDateTime createdOn;

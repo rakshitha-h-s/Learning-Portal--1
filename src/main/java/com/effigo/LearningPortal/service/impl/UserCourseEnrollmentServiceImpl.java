@@ -2,7 +2,9 @@ package com.effigo.LearningPortal.service.impl;
 
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.stereotype.Service;
+
 import com.effigo.LearningPortal.dto.mapper.UserCourseEnrollmentMapper;
 import com.effigo.LearningPortal.dto.request.UserCourseEnrollmentrequest;
 import com.effigo.LearningPortal.dto.response.UserCourseEnrollmentresponse;
@@ -11,14 +13,18 @@ import com.effigo.LearningPortal.repository.UserCourseEnrollmentRepository;
 import com.effigo.LearningPortal.service.UserCourseEnrollmentService;
 
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 @Transactional
-public class UserCourseEnrollmentServiceImpl implements UserCourseEnrollmentService{
+public class UserCourseEnrollmentServiceImpl implements UserCourseEnrollmentService {
 	private final UserCourseEnrollmentRepository usercourseenrollmentRepository;
-	public UserCourseEnrollmentServiceImpl(UserCourseEnrollmentRepository usercourseenrollmentRepository)
-	{
-		this.usercourseenrollmentRepository=usercourseenrollmentRepository;
+
+	public UserCourseEnrollmentServiceImpl(UserCourseEnrollmentRepository usercourseenrollmentRepository) {
+		this.usercourseenrollmentRepository = usercourseenrollmentRepository;
 	}
+
 	@Override
 	public List<UserCourseEnrollmentEntity> findAllCourseEnrollment() {
 		return usercourseenrollmentRepository.findAll();
@@ -29,7 +35,6 @@ public class UserCourseEnrollmentServiceImpl implements UserCourseEnrollmentServ
 		return usercourseenrollmentRepository.findById(id);
 	}
 
-
 	@Override
 	public void deleteUserCourseEnrollmententity(Long id) {
 		usercourseenrollmentRepository.deleteById(id);
@@ -38,21 +43,23 @@ public class UserCourseEnrollmentServiceImpl implements UserCourseEnrollmentServ
 	@Override
 	public UserCourseEnrollmentresponse saveUserCourseEnrollmentEntity(
 			UserCourseEnrollmentrequest usercourseenrollmententityrequest) {
-		UserCourseEnrollmentEntity userEntity = UserCourseEnrollmentMapper.MAPPER.fromRequestToEntity(usercourseenrollmententityrequest);
-        usercourseenrollmentRepository.save(userEntity);
-        return UserCourseEnrollmentMapper.MAPPER.fromEntityToResponse(userEntity);
+		UserCourseEnrollmentEntity userEntity = UserCourseEnrollmentMapper.MAPPER
+				.fromRequestToEntity(usercourseenrollmententityrequest);
+		usercourseenrollmentRepository.save(userEntity);
+		return UserCourseEnrollmentMapper.MAPPER.fromEntityToResponse(userEntity);
 	}
 
 	@Override
-	public UserCourseEnrollmentresponse updateUserCourseEnrollmentEntity(UserCourseEnrollmentrequest usercourseentityrequest, Long id) {
-		
-		Optional<UserCourseEnrollmentEntity> checkExistinguser = findById(id);
-        if (! checkExistinguser.isPresent())
-            throw new RuntimeException("course enrollment Id "+ id + " Not Found!");
+	public UserCourseEnrollmentresponse updateUserCourseEnrollmentEntity(
+			UserCourseEnrollmentrequest usercourseentityrequest, Long id) {
 
-        UserCourseEnrollmentEntity userEntity = UserCourseEnrollmentMapper.MAPPER.fromRequestToEntity(usercourseentityrequest);
-        usercourseenrollmentRepository.save(userEntity);
-        return UserCourseEnrollmentMapper.MAPPER.fromEntityToResponse(userEntity);
+		Optional<UserCourseEnrollmentEntity> checkExistinguser = findById(id);
+		if (!checkExistinguser.isPresent())
+			log.error("course enrollment Id " + id + " Not Found!");
+		UserCourseEnrollmentEntity userEntity = UserCourseEnrollmentMapper.MAPPER
+				.fromRequestToEntity(usercourseentityrequest);
+		usercourseenrollmentRepository.save(userEntity);
+		return UserCourseEnrollmentMapper.MAPPER.fromEntityToResponse(userEntity);
 	}
 
 }

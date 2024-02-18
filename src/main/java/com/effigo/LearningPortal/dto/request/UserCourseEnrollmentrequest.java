@@ -12,9 +12,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserCourseEnrollmentrequest implements Serializable{
-	private Long enrollment_id;
-	private UserEntity u_id;
-	private CourseEntity course_id;
-	private String enrollment_date;
+	private Long enrollmentId;
+	private UserEntity uId;
+	private CourseEntity courseId;
 
 }
