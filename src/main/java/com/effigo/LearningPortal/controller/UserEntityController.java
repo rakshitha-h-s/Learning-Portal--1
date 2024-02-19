@@ -2,6 +2,7 @@ package com.effigo.LearningPortal.controller;
 
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,7 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.effigo.LearningPortal.dto.request.CourseEntityrequest;
 import com.effigo.LearningPortal.dto.request.UserEntityrequest;
 import com.effigo.LearningPortal.dto.response.CourseEntityResponse;
@@ -44,7 +47,7 @@ public class UserEntityController {
 
 	@DeleteMapping("/{id}")
 	public void deleteUserEntity(@PathVariable("id") Long id) {
-		log.info("The user with"+id+" is deleted");
+		log.info("The user with" + id + " is deleted");
 		userService.deleteUserentity(id);
 	}
 
@@ -57,41 +60,44 @@ public class UserEntityController {
 	@PutMapping("/update/{id}")
 	public UserEntityresponse updateUserEntity(@RequestBody UserEntityrequest userRequest,
 			@PathVariable("id") Long id) {
-		log.info("The user with id"+id+"is updated");
+		log.info("The user with id" + id + "is updated");
 		return userService.updateUserEntity(userRequest, id);
 	}
 
 	//"Admin" can create user accounts
-	@PostMapping("/{usertype}/{id}/{password}")
+	@PostMapping("/{usertype}")
 	public UserEntityresponse saveUserEntityResponse1(@RequestBody UserEntityrequest userRequest,
-			@PathVariable("usertype") UserType usertype, @PathVariable("id") Long id,
-			@PathVariable("password") String password) {
-		return userService.saveUserEntity1(userRequest, usertype, id, password);
+			@PathVariable("usertype") UserType usertype, @RequestParam("id") Long id,
+			@RequestParam("username") String username, @RequestParam("password") String password) {
+		return userService.saveUserEntity1(userRequest, usertype, id, username, password);
 	}
 
-	@PostMapping("/addcourse/{usertype}/{id}/{password}")
+	@PostMapping("/addcourse/{usertype}")
 	public CourseEntityResponse saveCourseEntityResponse(@RequestBody CourseEntityrequest userrequest,
-			@PathVariable("usertype") UserType usertype, @PathVariable("id") Long id,
-			@PathVariable("password") String password) {
-		return userService.saveCourseEntity1(userrequest, usertype, id, password);
+			@PathVariable("usertype") UserType usertype, @RequestParam("id") Long id,
+			@RequestParam("username") String username, @RequestParam("password") String password) {
+		return userService.saveCourseEntity1(userrequest, usertype, id, username, password);
 	}
 
-	@PutMapping("/updatecourse/{usertype}/{id}/{password}/{courseid}")
+	@PutMapping("/updatecourse/{usertype}/{courseid}")
 	public CourseEntityResponse updateCourseEntityResponse(@RequestBody CourseEntityrequest userrequest,
-			@PathVariable("usertype") UserType usertype, @PathVariable("id") Long id,
-			@PathVariable("password") String password, @PathVariable("courseid") Long courseid) {
-		return userService.updateCourseEntity1(userrequest, usertype, id, password, courseid);
+			@PathVariable("usertype") UserType usertype, @RequestParam("id") Long id,
+			@RequestParam("username") String username, @RequestParam("password") String password,
+			@PathVariable("courseid") Long courseid) {
+		return userService.updateCourseEntity1(userrequest, usertype, id, username, password, courseid);
 	}
 
-	@PostMapping("/addfav/{usertype}/{username}/{course_id}")
-	public String addFavoriteEntity(@PathVariable("usertype") UserType usertype,
-			@PathVariable("username") String username, @PathVariable("course_id") Long courseId) {
-		return userService.saveFavoriteEntity(usertype, username, courseId);
+	@PostMapping("/addfav/{usertype}/{course_id}")
+	public String addFavoriteEntity(@PathVariable("usertype") UserType usertype, @RequestParam("id") Long id,
+			@RequestParam("username") String username, @RequestParam("password") String password,
+			@PathVariable("course_id") Long courseId) {
+		return userService.saveFavoriteEntity(usertype, id, username, password, courseId);
 	}
 
-	@PostMapping("/enrollcourse/{usertype}/{username}/{course_id}")
-	public String courseenrollment(@PathVariable("usertype") UserType usertype,
-			@PathVariable("username") String username, @PathVariable("course_id") Long courseId) {
-		return userService.courseenrollment(usertype, username, courseId);
+	@PostMapping("/enrollcourse/{usertype}/{course_id}")
+	public String courseenrollment(@PathVariable("usertype") UserType usertype, @RequestParam("id") Long id,
+			@RequestParam("username") String username, @RequestParam("password") String password,
+			@PathVariable("course_id") Long courseId) {
+		return userService.courseenrollment(usertype, id, username, password, courseId);
 	}
 }

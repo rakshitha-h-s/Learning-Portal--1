@@ -2,7 +2,9 @@ package com.effigo.LearningPortal.service.impl;
 
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.stereotype.Service;
+
 import com.effigo.LearningPortal.dto.mapper.CourseEntityMapper;
 import com.effigo.LearningPortal.dto.mapper.UserEntityMapper;
 import com.effigo.LearningPortal.dto.request.CourseEntityrequest;
@@ -64,6 +66,14 @@ public class UserEntityServiceImpl implements UserEntityService {
 		return UserEntityMapper.MAPPER.fromEntityToResponse(userEntity);
 	}
 
+	private UserEntityRepository userRepository;
+
+	public Long isValidUser(String username) {
+		Optional<UserEntity> userOptional = userRepository.findByUsername(username);
+		UserEntity user = userOptional.get();
+		return user.getuId();
+	}
+
 	@Override
 	public UserEntityresponse updateUserEntity(UserEntityrequest userentityrequest, Long id) {
 		Optional<UserEntity> checkExistinguser = findById(id);
@@ -76,17 +86,20 @@ public class UserEntityServiceImpl implements UserEntityService {
 
 	@Override
 	public UserEntityresponse saveUserEntity1(UserEntityrequest userentityrequest, UserType usertype, Long id,
-			String password) {
+			String username, String password) {
 		if (usertype != UserType.ADMIN) {
 			log.error("usertype is not admin");
 		}
 		Optional<UserEntity> userOptional = userentityRepository.findById(id);
 		UserEntity user = userOptional.get();
-		if (user.getUId().equals(id) && userOptional.isPresent()) {
-			log.error("ADMIN with ID " + id + " not found.");
+		if (user.getuId() != id) {
+			log.error("ADMIN with ID " + id + " not present");
 		}
 		if (user.getUserType() != UserType.ADMIN) {
-			log.error("User with ID " + id + " is not an admin user.");
+			log.error("User with the ID " + id + " is not an admin user.");
+		}
+		if (!user.getUsername().equals(username)) {
+			log.error("user with username" + username + "not found");
 		}
 		if (!user.getPassword().equals(password)) {
 			log.error("Password of ADMIN is incorrect");
@@ -99,17 +112,20 @@ public class UserEntityServiceImpl implements UserEntityService {
 
 	@Override
 	public CourseEntityResponse saveCourseEntity1(CourseEntityrequest courserequest, UserType usertype, Long id,
-			String password) {
+			String username, String password) {
 		if (usertype != UserType.AUTHOR) {
 			log.error("Only ADMIN users are allowed to perform this operation.");
 		}
 		Optional<UserEntity> userOptional = userentityRepository.findById(id);
 		UserEntity user = userOptional.get();
-		if (user.getUId().equals(id)) {
-			log.error("AUTHOR with ID " + id + " not found.");
+		if (!user.getuId().equals(id)) {
+			log.error("AUTHOR with ID " + id + "is  not found.");
 		}
 		if (user.getUserType() != UserType.AUTHOR) {
-			log.error("User with ID " + id + " is not an author user.");
+			log.error("User with user id " + id + " is not an author user.");
+		}
+		if (!user.getUsername().equals(username)) {
+			log.error("username with " + username + "of AUTHOR is not present");
 		}
 		if (!user.getPassword().equals(password)) {
 			log.error("Password of AUTHOR is incorrect");
@@ -122,17 +138,20 @@ public class UserEntityServiceImpl implements UserEntityService {
 
 	@Override
 	public CourseEntityResponse updateCourseEntity1(CourseEntityrequest courserequest, UserType usertype, Long id,
-			String password, Long courseid) {
+			String username, String password, Long courseid) {
 		if (usertype != UserType.AUTHOR) {
 			log.error("Only ADMIN users are allowed to perform this operation.");
 		}
 		Optional<UserEntity> userOptional = userentityRepository.findById(id);
 		UserEntity user = userOptional.get();
-		if (user.getUId().equals(id)) {
-			log.error("AUTHOR with ID " + id + " not found.");
+		if (user.getuId().equals(id)) {
+			log.error("AUTHOR with ID " + id + "isn't found.");
 		}
 		if (user.getUserType().equals(UserType.AUTHOR)) {
-			log.error("User with ID " + id + " is not an author user.");
+			log.error("User with ID of " + id + " is not an author user.");
+		}
+		if (!user.getUsername().equals(username)) {
+			log.error("username of AUTHOR is incorrect");
 		}
 		if (!user.getPassword().equals(password)) {
 			log.error("Password of AUTHOR is incorrect");
@@ -148,22 +167,23 @@ public class UserEntityServiceImpl implements UserEntityService {
 	}
 
 	@Override
-	public String saveFavoriteEntity(UserType usertype, String username, Long courseid) {
+	public String saveFavoriteEntity(UserType usertype, Long id, String username, String password, Long courseid) {
 		if (usertype != UserType.LEARNER) {
 			log.error("Only LEARNER are allowed to perform this operation.");
 		}
-		Long id = isValidUser(username);
 		Optional<UserEntity> userOptional = userentityRepository.findById(id);
 		UserEntity user = userOptional.get();
 		Optional<CourseEntity> courseOptiona1 = courseentityrepository.findById(courseid);
 		CourseEntity course = courseOptiona1.get();
-		if (user.getUId().equals(id)) {
+		if (user.getuId().equals(id)) {
 			log.error("learner with ID " + id + " not found.");
 		}
 		if (user.getUserType().equals(UserType.LEARNER)) {
 			log.error("User with ID " + id + " is not an learner .");
 		}
-
+		if (!user.getPassword().equals(password)) {
+			log.error("Password of LEARNER is incorrect");
+		}
 		FavoriteEntity fav = new FavoriteEntity();
 		fav.setCourseId(course);
 		fav.setUId(user);
@@ -171,28 +191,25 @@ public class UserEntityServiceImpl implements UserEntityService {
 		return "favorite added";
 	}
 
-	private UserEntityRepository userRepository;
-
-	public Long isValidUser(String username) {
-		Optional<UserEntity> userOptional = userRepository.findByUsername(username);
-		UserEntity user = userOptional.get();
-		return user.getUId();
-	}
-
 	@Override
-	public String courseenrollment(UserType usertype, String username, Long courseid) {
+	public String courseenrollment(UserType usertype, Long id, String username, String password, Long courseid) {
 		if (usertype != UserType.LEARNER) {
 			log.error("Only LEARNER are allowed to perform this operation.");
 		}
-		Long id = isValidUser(username);
 		Optional<UserEntity> userOptional = userentityRepository.findById(id);
 		UserEntity user = userOptional.get();
 
-		if (user.getUId().equals(id)) {
+		if (user.getuId().equals(id)) {
 			log.error("learner with ID " + id + " not found.");
 		}
 		if (user.getUserType() != UserType.LEARNER) {
 			log.error("User with ID " + id + " is not an learner .");
+		}
+		if (!user.getUsername().equals(username)) {
+			log.error("username of LEARNER is incorrect");
+		}
+		if (!user.getPassword().equals(password)) {
+			log.error("Password of LEARNER is incorrect");
 		}
 		Optional<CourseEntity> userOptiona1 = courseentityrepository.findById(courseid);
 		CourseEntity course = userOptiona1.get();

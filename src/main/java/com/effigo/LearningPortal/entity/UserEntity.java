@@ -63,4 +63,12 @@ public class UserEntity {
 		ADMIN, AUTHOR, LEARNER
 	}
 
+	public Long getuId() {
+		return uId;
+	}
+
+	public void setuId(Long uId) {
+		this.uId = uId;
+	}
+
 }

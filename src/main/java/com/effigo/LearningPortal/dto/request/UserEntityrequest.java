@@ -14,6 +14,15 @@ import lombok.NoArgsConstructor;
 public class UserEntityrequest implements Serializable {
 	private Long uId;
 	private String username;
+
+	public Long getuId() {
+		return uId;
+	}
+
+	public void setuId(Long uId) {
+		this.uId = uId;
+	}
+
 	private String password;
 	private UserType userType;
 

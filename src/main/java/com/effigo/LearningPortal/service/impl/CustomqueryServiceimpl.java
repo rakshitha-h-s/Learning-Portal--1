@@ -2,21 +2,17 @@ package com.effigo.LearningPortal.service.impl;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.effigo.LearningPortal.repository.CustomQueryRepository;
 
 import jakarta.transaction.Transactional;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 @Transactional
 public class CustomqueryServiceimpl {
 	private final CustomQueryRepository customquery;
 
-	@Autowired
 	public CustomqueryServiceimpl(CustomQueryRepository customquery) {
 		this.customquery = customquery;
 	}
