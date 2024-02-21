@@ -1,14 +1,22 @@
 package com.effigo.LearningPortal.dto.mapper;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
-import com.effigo.LearningPortal.dto.request.CategoryEntityrequest;
-import com.effigo.LearningPortal.dto.response.CategoryEntityresponse;
+
+import com.effigo.LearningPortal.dto.CategoryEntitydto;
 import com.effigo.LearningPortal.entity.CategoryEntity;
 
-@Mapper
-public interface CategoryEntityMapper {
-	CategoryEntityMapper MAPPER =Mappers.getMapper(CategoryEntityMapper.class);
-	CategoryEntity fromRequestToEntity(CategoryEntityrequest courseentityRequest);
-	CategoryEntityresponse fromEntityToResponse(CategoryEntity courseEntity);
+@Mapper(componentModel = "spring")
+public interface CategoryEntityMapper extends EntityMapper<CategoryEntitydto, CategoryEntity> {
+	CategoryEntitydto toDto(Optional<CategoryEntity> user);
+
+	CategoryEntitydto toDto(CategoryEntity user);
+
+	CategoryEntity toEntity(CategoryEntitydto d);
+
+	List<CategoryEntitydto> toDto(List<CategoryEntity> elist);
+
+	List<CategoryEntity> toEntity(List<CategoryEntitydto> dlist);
 }

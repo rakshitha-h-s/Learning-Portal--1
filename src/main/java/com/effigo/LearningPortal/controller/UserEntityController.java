@@ -1,7 +1,6 @@
 package com.effigo.LearningPortal.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,13 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.effigo.LearningPortal.dto.request.CourseEntityrequest;
-import com.effigo.LearningPortal.dto.request.UserEntityrequest;
-import com.effigo.LearningPortal.dto.response.CourseEntityResponse;
-import com.effigo.LearningPortal.dto.response.UserEntityresponse;
-import com.effigo.LearningPortal.entity.UserEntity;
+import com.effigo.LearningPortal.dto.CourseEntitydto;
+import com.effigo.LearningPortal.dto.UserEntitydto;
 import com.effigo.LearningPortal.entity.UserEntity.UserType;
-import com.effigo.LearningPortal.service.UserEntityService;
+import com.effigo.LearningPortal.service.UserEntityServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,20 +23,20 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/userentity")
 public class UserEntityController {
-	private final UserEntityService userService;
+	private final UserEntityServiceImpl userService;
 
-	public UserEntityController(UserEntityService userService) {
+	public UserEntityController(UserEntityServiceImpl userService) {
 		this.userService = userService;
 	}
 
 	@GetMapping
-	public List<UserEntity> findAllUser() {
+	public List<UserEntitydto> findAllUser() {
 		log.info("all users");
 		return userService.findAllUser();
 	}
 
 	@GetMapping("/{u_id}")
-	public Optional<UserEntity> findById(@PathVariable("u_id") Long id) {
+	public UserEntitydto findById(@PathVariable("u_id") Long id) {
 		log.info("Get users by id");
 		return userService.findById(id);
 	}
@@ -52,35 +48,34 @@ public class UserEntityController {
 	}
 
 	@PostMapping("/res")
-	public UserEntityresponse saveUserEntityResponse(@RequestBody UserEntityrequest userRequest) {
+	public UserEntitydto saveUserEntityResponse(@RequestBody UserEntitydto userRequest) {
 		log.info("The user is saved");
 		return userService.saveUserEntity(userRequest);
 	}
 
 	@PutMapping("/update/{id}")
-	public UserEntityresponse updateUserEntity(@RequestBody UserEntityrequest userRequest,
-			@PathVariable("id") Long id) {
+	public UserEntitydto updateUserEntity(@RequestBody UserEntitydto userRequest, @PathVariable("id") Long id) {
 		log.info("The user with id" + id + "is updated");
 		return userService.updateUserEntity(userRequest, id);
 	}
 
 	//"Admin" can create user accounts
 	@PostMapping("/{usertype}")
-	public UserEntityresponse saveUserEntityResponse1(@RequestBody UserEntityrequest userRequest,
+	public UserEntitydto saveUserEntityResponse1(@RequestBody UserEntitydto userRequest,
 			@PathVariable("usertype") UserType usertype, @RequestParam("id") Long id,
 			@RequestParam("username") String username, @RequestParam("password") String password) {
 		return userService.saveUserEntity1(userRequest, usertype, id, username, password);
 	}
 
 	@PostMapping("/addcourse/{usertype}")
-	public CourseEntityResponse saveCourseEntityResponse(@RequestBody CourseEntityrequest userrequest,
+	public CourseEntitydto saveCourseEntityResponse(@RequestBody CourseEntitydto userrequest,
 			@PathVariable("usertype") UserType usertype, @RequestParam("id") Long id,
 			@RequestParam("username") String username, @RequestParam("password") String password) {
 		return userService.saveCourseEntity1(userrequest, usertype, id, username, password);
 	}
 
 	@PutMapping("/updatecourse/{usertype}/{courseid}")
-	public CourseEntityResponse updateCourseEntityResponse(@RequestBody CourseEntityrequest userrequest,
+	public CourseEntitydto updateCourseEntityResponse(@RequestBody CourseEntitydto userrequest,
 			@PathVariable("usertype") UserType usertype, @RequestParam("id") Long id,
 			@RequestParam("username") String username, @RequestParam("password") String password,
 			@PathVariable("courseid") Long courseid) {

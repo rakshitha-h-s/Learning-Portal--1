@@ -1,4 +1,4 @@
-package com.effigo.LearningPortal.service.impl;
+package com.effigo.LearningPortal.service;
 
 import java.util.List;
 
@@ -6,10 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.effigo.LearningPortal.repository.CustomQueryRepository;
 
-import jakarta.transaction.Transactional;
-
 @Service
-@Transactional
 public class CustomqueryServiceimpl {
 	private final CustomQueryRepository customquery;
 

@@ -1,47 +1,27 @@
-package com.effigo.LearningPortal.entity;
+package com.effigo.LearningPortal.dto;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import com.effigo.LearningPortal.entity.CourseEntity;
+import com.effigo.LearningPortal.entity.UserEntity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "favorite_entity")
-public class FavoriteEntity {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "f_id")
+public class FavoriteEntitydto implements Serializable {
 	private Long fId;
-	@ManyToOne
-	@JoinColumn(name = "uId", referencedColumnName = "u_id")
 	private UserEntity uId;
-	@ManyToOne
-	@JoinColumn(name = "courseId", referencedColumnName = "course_id")
 	private CourseEntity courseId;
-	@CreationTimestamp
-	@Column(name = "created_on", nullable = false, updatable = false)
 	private LocalDateTime createdOn;
-	@UpdateTimestamp
-	@Column(name = "updated_on", nullable = false)
 	private LocalDateTime updatedOn;
 
 	@PrePersist
@@ -49,6 +29,7 @@ public class FavoriteEntity {
 		this.createdOn = LocalDateTime.now();
 	}
 
+	// method to get createdOn field in "MM/DD/YYYY HH:MM" format
 	public String getFormattedCreatedOn() {
 		if (createdOn == null) {
 			return "";

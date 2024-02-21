@@ -1,45 +1,36 @@
-package com.effigo.LearningPortal.entity;
+package com.effigo.LearningPortal.dto;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import com.effigo.LearningPortal.entity.UserEntity.UserType;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "user_entity")
-public class UserEntity {
-	@Id
-	@Column(name = "u_id")
+public class UserEntitydto implements Serializable {
 	private Long uId;
-	@Column(name = "username")
 	private String username;
-	@Column(name = "password")
+
+	public Long getuId() {
+		return uId;
+	}
+
+	public void setuId(Long uId) {
+		this.uId = uId;
+	}
+
 	private String password;
-	@Column(name = "user_type")
-	@Enumerated(EnumType.STRING)
 	private UserType userType;
-	@CreationTimestamp
-	@Column(name = "created_on", nullable = false, updatable = false)
 	private LocalDateTime createdOn;
-	@UpdateTimestamp
-	@Column(name = "updated_on", nullable = false)
 	private LocalDateTime updatedOn;
 
 	@PrePersist
@@ -62,18 +53,6 @@ public class UserEntity {
 		}
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
 		return updatedOn.format(formatter);
-	}
-
-	public enum UserType {
-		ADMIN, AUTHOR, LEARNER
-	}
-
-	public Long getuId() {
-		return uId;
-	}
-
-	public void setuId(Long uId) {
-		this.uId = uId;
 	}
 
 }

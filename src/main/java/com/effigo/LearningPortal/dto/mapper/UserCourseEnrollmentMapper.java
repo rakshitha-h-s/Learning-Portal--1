@@ -1,14 +1,22 @@
 package com.effigo.LearningPortal.dto.mapper;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
-import com.effigo.LearningPortal.dto.request.UserCourseEnrollmentrequest;
-import com.effigo.LearningPortal.dto.response.UserCourseEnrollmentresponse;
+
+import com.effigo.LearningPortal.dto.UserCourseEnrollmentdto;
 import com.effigo.LearningPortal.entity.UserCourseEnrollmentEntity;
 
-@Mapper
-public interface UserCourseEnrollmentMapper {
-	UserCourseEnrollmentMapper MAPPER =Mappers.getMapper(UserCourseEnrollmentMapper.class);
-	UserCourseEnrollmentEntity fromRequestToEntity(UserCourseEnrollmentrequest usercourseRequest);
-	UserCourseEnrollmentresponse fromEntityToResponse(UserCourseEnrollmentEntity usercourseEntity);
+@Mapper(componentModel = "spring")
+public interface UserCourseEnrollmentMapper extends EntityMapper<UserCourseEnrollmentdto, UserCourseEnrollmentEntity> {
+	UserCourseEnrollmentdto toDto(Optional<UserCourseEnrollmentEntity> user);
+
+	UserCourseEnrollmentdto toDto(UserCourseEnrollmentEntity user);
+
+	UserCourseEnrollmentEntity toEntity(UserCourseEnrollmentdto d);
+
+	List<UserCourseEnrollmentdto> toDto(List<UserCourseEnrollmentEntity> elist);
+
+	List<UserCourseEnrollmentEntity> toEntity(List<UserCourseEnrollmentdto> dlist);
 }
