@@ -8,31 +8,27 @@ import org.hibernate.query.NativeQuery;
 
 public class CustomCourseIdGenerator implements IdentifierGenerator {
 
-	private static int rowCount = 0;
-
 	@Override
 	public Serializable generate(SharedSessionContractImplementor session, Object object) {
-		if (rowCount == 0) {
-			NativeQuery<Number> query = session.createNativeQuery("SELECT COUNT(*) FROM course_entity");
-			Number count = query.uniqueResult();
-			rowCount = count != null ? count.intValue() : 0;
-		}
-		return "course-" + (++rowCount);
+		int rowCount;
+		NativeQuery<Number> query = session
+				.createNativeQuery("SELECT MAX(CAST(SUBSTRING(course_id, 8) AS int)) FROM course_entity");
+		Number count = query.uniqueResult();
+		rowCount = count != null ? count.intValue() : 0;
+		return "course-0" + (++rowCount);
 	}
 }
 
 class CustomCatIdGenerator1 implements IdentifierGenerator {
 
-	private static int count = 0;
-
 	@Override
 	public Serializable generate(SharedSessionContractImplementor session, Object object) {
-		if (count == 0) {
-			NativeQuery<Number> query = session.createNativeQuery("SELECT COUNT(*) FROM category_entity");
-			Number count = query.uniqueResult();
-			count = count != null ? count.intValue() : 0;
-		}
-		return "cat-0" + (++count);
+		int rowCount;
+		NativeQuery<Number> query = session
+				.createNativeQuery("SELECT MAX(CAST(SUBSTRING(category_id,5)AS int) FROM category_entity");
+		Number count = query.uniqueResult();
+		rowCount = count != null ? count.intValue() : 0;
+		return "cat-" + (++rowCount);
 	}
 
 }
