@@ -76,21 +76,21 @@ public class UserEntityController {
 	public CourseEntitydto updateCourseEntityResponse(@RequestBody CourseEntitydto userrequest,
 			@PathVariable("usertype") UserType usertype, @RequestParam("id") Long id,
 			@RequestParam("username") String username, @RequestParam("password") String password,
-			@PathVariable("courseid") Long courseid) {
+			@PathVariable("courseid") String courseid) {
 		return userService.updateCourseEntity1(userrequest, usertype, id, username, password, courseid);
 	}
 
 	@PostMapping("/addfav/{usertype}/{course_id}")
 	public String addFavoriteEntity(@PathVariable("usertype") UserType usertype, @RequestParam("id") Long id,
 			@RequestParam("username") String username, @RequestParam("password") String password,
-			@PathVariable("course_id") Long courseId) {
+			@PathVariable("course_id") String courseId) {
 		return userService.saveFavoriteEntity(usertype, id, username, password, courseId);
 	}
 
 	@PostMapping("/enrollcourse/{usertype}/{course_id}")
 	public String courseenrollment(@PathVariable("usertype") UserType usertype, @RequestParam("id") Long id,
 			@RequestParam("username") String username, @RequestParam("password") String password,
-			@PathVariable("course_id") Long courseId) {
+			@PathVariable("course_id") String courseId) {
 		return userService.courseenrollment(usertype, id, username, password, courseId);
 	}
 }

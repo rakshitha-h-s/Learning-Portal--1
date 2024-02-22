@@ -135,7 +135,7 @@ public class UserEntityServiceImpl {
 			flag = false;
 			log.error("Password of AUTHOR is incorrect");
 		}
-		if (Boolean.FALSE.equals(flag)) {
+		if (Boolean.TRUE.equals(flag)) {
 			CourseEntity courseEntity = courseEntityMapper.toEntity(courserequest);
 			courseentityrepository.save(courseEntity);
 			log.info("course saved");
@@ -145,7 +145,7 @@ public class UserEntityServiceImpl {
 	}
 
 	public CourseEntitydto updateCourseEntity1(CourseEntitydto courserequest, UserType usertype, Long id,
-			String username, String password, Long courseid) {
+			String username, String password, String courseid) {
 		Boolean flag = false;
 		if (usertype != UserType.AUTHOR) {
 			log.error("Only ADMIN users are allowed to perform this operation.");
@@ -183,7 +183,7 @@ public class UserEntityServiceImpl {
 		}
 	}
 
-	public String saveFavoriteEntity(UserType usertype, Long id, String username, String password, Long courseid) {
+	public String saveFavoriteEntity(UserType usertype, Long id, String username, String password, String courseid) {
 		Boolean flag = false;
 		if (usertype != UserType.LEARNER) {
 			log.error("Only LEARNER are allowed to perform this operation.");
@@ -220,7 +220,7 @@ public class UserEntityServiceImpl {
 		}
 	}
 
-	public String courseenrollment(UserType usertype, Long id, String username, String password, Long courseid) {
+	public String courseenrollment(UserType usertype, Long id, String username, String password, String courseid) {
 		Boolean flag = false;
 		if (usertype != UserType.LEARNER) {
 			log.error("Only LEARNER are allowed to perform this operation.");

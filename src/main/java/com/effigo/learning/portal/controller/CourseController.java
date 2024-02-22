@@ -30,13 +30,13 @@ public class CourseController {
 	}
 
 	@GetMapping("/{u_id}")
-	public CourseEntitydto findById(@PathVariable("u_id") Long id) {
+	public CourseEntitydto findById(@PathVariable("u_id") String id) {
 		log.info("the course with course id" + id);
 		return userService.findById(id);
 	}
 
 	@DeleteMapping("/{id}")
-	public void deleteCourseEntity(@PathVariable("id") Long id) {
+	public void deleteCourseEntity(@PathVariable("id") String id) {
 		log.info("the course with id" + id + "is deleted");
 		userService.deleteCourseentity(id);
 	}
@@ -48,7 +48,7 @@ public class CourseController {
 	}
 
 	@PutMapping("/update/{id}")
-	public CourseEntitydto updateCourseEntity(@RequestBody CourseEntitydto userRequest, @PathVariable("id") Long id) {
+	public CourseEntitydto updateCourseEntity(@RequestBody CourseEntitydto userRequest, @PathVariable("id") String id) {
 		log.info("course is updated");
 		return userService.updateCourseEntity(userRequest, id);
 	}

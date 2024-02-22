@@ -4,10 +4,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -26,8 +28,10 @@ import lombok.NoArgsConstructor;
 @Table(name = "course_entity")
 public class CourseEntity {
 	@Id
+	@GeneratedValue(generator = "courseIdGenerator")
+	@GenericGenerator(name = "courseIdGenerator", strategy = "com.effigo.learning.portal.entity.CustomCourseIdGenerator")
 	@Column(name = "course_id")
-	private Long courseId;
+	private String courseId;
 	@Column(name = "course_name")
 	private String courseName;
 	@ManyToOne

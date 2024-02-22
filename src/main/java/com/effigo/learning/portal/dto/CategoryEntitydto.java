@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class CategoryEntitydto implements Serializable {
-	private Long categoryId;
+	private String categoryId;
 	private CategoryType categoryType;
 	private LocalDateTime createdOn;
 	private LocalDateTime updatedOn;

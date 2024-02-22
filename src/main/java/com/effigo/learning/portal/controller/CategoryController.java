@@ -31,13 +31,13 @@ public class CategoryController {
 	}
 
 	@GetMapping("/{u_id}")
-	public CategoryEntitydto findById(@PathVariable("u_id") Long id) {
+	public CategoryEntitydto findById(@PathVariable("u_id") String id) {
 		log.info("category based on id" + id);
 		return userService.findById(id);
 	}
 
 	@DeleteMapping("/{id}")
-	public void deleteCategoryEntity(@PathVariable("id") Long id) {
+	public void deleteCategoryEntity(@PathVariable("id") String id) {
 		log.info("deleted the category with id" + id);
 		userService.deleteCategoryentity(id);
 	}
@@ -50,7 +50,7 @@ public class CategoryController {
 
 	@PutMapping("/update/{id}")
 	public CategoryEntitydto updateCategoryEntity(@RequestBody CategoryEntitydto userRequest,
-			@PathVariable("id") Long id) {
+			@PathVariable("id") String id) {
 		log.info("updated category");
 		return userService.updateCategoryEntity(userRequest, id);
 	}

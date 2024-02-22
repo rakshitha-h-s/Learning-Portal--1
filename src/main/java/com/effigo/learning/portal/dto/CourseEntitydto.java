@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class CourseEntitydto implements Serializable {
-	private Long courseId;
+	private String courseId;
 	private String courseName;
 	private CategoryEntity category;
 	private UserEntity id;

@@ -4,12 +4,14 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
@@ -26,8 +28,10 @@ import lombok.NoArgsConstructor;
 @Table(name = "category_entity")
 public class CategoryEntity {
 	@Id
+	@GeneratedValue(generator = "catIdGenerator")
+	@GenericGenerator(name = "catIdGenerator", strategy = "com.effigo.learning.portal.entity.CustomCatIdGenerator1")
 	@Column(name = "category_id")
-	private Long categoryId;
+	private String categoryId;
 	@Enumerated(EnumType.STRING)
 	@Column(name = "category_type")
 	private CategoryType categoryType;

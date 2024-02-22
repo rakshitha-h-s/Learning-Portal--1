@@ -27,7 +27,7 @@ public class CourseServiceImpl {
 		return courseMapper.toDto(user);
 	}
 
-	public CourseEntitydto findById(Long id) {
+	public CourseEntitydto findById(String id) {
 		Optional<CourseEntity> user = courseentityRepository.findById(id);
 		if (user.isPresent()) {
 			CourseEntity course = user.get();
@@ -36,7 +36,7 @@ public class CourseServiceImpl {
 		return null;
 	}
 
-	public void deleteCourseentity(Long id) {
+	public void deleteCourseentity(String id) {
 		courseentityRepository.deleteById(id);
 	}
 
@@ -46,7 +46,7 @@ public class CourseServiceImpl {
 		return courseMapper.toDto(courseEntity);
 	}
 
-	public CourseEntitydto updateCourseEntity(CourseEntitydto courserequest, Long id) {
+	public CourseEntitydto updateCourseEntity(CourseEntitydto courserequest, String id) {
 		Optional<CourseEntity> checkExistinguser = courseentityRepository.findById(id);
 		if (!checkExistinguser.isPresent())
 			log.error("Course Id " + id + " Not Found!");

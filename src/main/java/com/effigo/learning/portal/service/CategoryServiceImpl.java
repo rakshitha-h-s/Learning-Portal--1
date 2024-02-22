@@ -27,12 +27,12 @@ public class CategoryServiceImpl {
 	@Autowired
 	CategoryEntityMapper categorymapper;
 
-	public CategoryEntitydto findById(Long id) {
+	public CategoryEntitydto findById(String id) {
 		Optional<CategoryEntity> user = categoryRepository.findById(id);
 		return categorymapper.toDto(user);
 	}
 
-	public void deleteCategoryentity(Long id) {
+	public void deleteCategoryentity(String id) {
 		categoryRepository.deleteById(id);
 	}
 
@@ -42,7 +42,7 @@ public class CategoryServiceImpl {
 		return categorymapper.toDto(userEntity);
 	}
 
-	public CategoryEntitydto updateCategoryEntity(CategoryEntitydto userentityrequest, Long uid) {
+	public CategoryEntitydto updateCategoryEntity(CategoryEntitydto userentityrequest, String uid) {
 		Optional<CategoryEntity> checkExistinguser = categoryRepository.findById(uid);
 		if (!checkExistinguser.isPresent())
 			log.error("Category Id " + uid + " Not Found!");
