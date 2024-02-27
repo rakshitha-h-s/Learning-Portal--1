@@ -61,7 +61,7 @@ public class UserEntityServiceImpl {
 		userentityrequest.setCreatedOn(LocalDateTime.now());
 		userentityrequest.setUpdatedOn(LocalDateTime.now());
 		UserEntity userEntity = userEntityMapper.toEntity(userentityrequest);
-		userentityRepository.save(userEntity);
+		userEntity = userentityRepository.save(userEntity);
 		return userEntityMapper.toDto(userEntity);
 	}
 
