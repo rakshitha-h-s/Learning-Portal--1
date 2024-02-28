@@ -11,6 +11,7 @@ import com.effigo.learning.portal.dto.mapper.CourseEntityMapper;
 import com.effigo.learning.portal.entity.CourseEntity;
 import com.effigo.learning.portal.repository.CourseEntityRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -33,7 +34,7 @@ public class CourseServiceImpl {
 			CourseEntity course = user.get();
 			return courseMapper.toDto(course);
 		}
-		return null;
+		throw new EntityNotFoundException("course id not found");
 	}
 
 	public void deleteCourseentity(String id) {
@@ -47,9 +48,11 @@ public class CourseServiceImpl {
 	}
 
 	public CourseEntitydto updateCourseEntity(CourseEntitydto courserequest, String id) {
-		Optional<CourseEntity> checkExistinguser = courseentityRepository.findById(id);
-		if (!checkExistinguser.isPresent())
+		Optional<CourseEntitydto> checkExistinguser = Optional.ofNullable(findById(id));
+		if (!checkExistinguser.isPresent()) {
 			log.error("Course Id " + id + " Not Found!");
+			throw new EntityNotFoundException("course id not found");
+		}
 		CourseEntity courseEntity = courseMapper.toEntity(courserequest);
 		courseentityRepository.save(courseEntity);
 		return courseMapper.toDto(courseEntity);

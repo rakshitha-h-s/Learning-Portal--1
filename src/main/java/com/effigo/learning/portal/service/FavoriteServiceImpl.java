@@ -21,10 +21,6 @@ public class FavoriteServiceImpl {
 	@Autowired
 	FavoriteEntityMapper favMapper;
 
-	public FavoriteServiceImpl(FavoriteEntityRepository favoriteRepository) {
-		this.favoriteRepository = favoriteRepository;
-	}
-
 	public List<FavoriteEntitydto> findAllFavorite() {
 		List<FavoriteEntity> user = favoriteRepository.findAll();
 		return favMapper.toDto(user);

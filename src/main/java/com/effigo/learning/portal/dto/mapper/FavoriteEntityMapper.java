@@ -10,6 +10,7 @@ import com.effigo.learning.portal.entity.FavoriteEntity;
 
 @Mapper(componentModel = "spring")
 public interface FavoriteEntityMapper extends EntityMapper<FavoriteEntitydto, FavoriteEntity> {
+
 	FavoriteEntitydto toDto(Optional<FavoriteEntity> user);
 
 	FavoriteEntitydto toDto(FavoriteEntity user);

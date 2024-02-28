@@ -3,7 +3,9 @@ package com.effigo.learning.portal.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -15,6 +17,7 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -25,6 +28,8 @@ import com.effigo.learning.portal.entity.UserEntity;
 import com.effigo.learning.portal.entity.UserEntity.UserType;
 import com.effigo.learning.portal.repository.UserEntityRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @ExtendWith(MockitoExtension.class)
 public class UserEntityServiceImplTest {
 	@Mock
@@ -33,9 +38,6 @@ public class UserEntityServiceImplTest {
 	private UserEntityRepository userEntityRepository;
 
 	@InjectMocks
-	//private UserEntityServiceImpl userEntityService;
-	//private UserEntityRepository userEntityRepository;
-	// private UserEntityMapper userEntityMapper;
 	private UserEntityServiceImpl userEntityService;
 
 	@Test
@@ -54,45 +56,37 @@ public class UserEntityServiceImplTest {
 
 		List<UserEntity> userList = Arrays.asList(user1, user2);
 
-		// Stub the repository method to return the test data
 		when(userEntityRepository.findAll()).thenReturn(userList);
 
-		// Mock the mapper method to return DTOs
 		UserEntitydto user1Dto = new UserEntitydto();
 		user1Dto.setUsername("user1");
 		UserEntitydto user2Dto = new UserEntitydto();
 		user2Dto.setUsername("user2");
 		when(userEntityMapper.toDto(userList)).thenReturn(Arrays.asList(user1Dto, user2Dto));
 
-		// Call the method to be tested
 		List<UserEntitydto> result = userEntityService.findAllUser();
 
-		// Verify the behavior
 		assertThat(result).isNotNull();
 		assertThat(result).hasSize(2);
 		assertThat(result.get(0).getUsername()).isEqualTo("user1");
 		assertThat(result.get(1).getUsername()).isEqualTo("user2");
 
-		// Verify that repository method was called
 		verify(userEntityRepository, times(1)).findAll();
 
-		// Verify that mapper method was called with the correct argument
 		verify(userEntityMapper, times(1)).toDto(userList);
 	}
 
 	@Test
 	public void testFindById() {
-		// Mocking the behavior of userEntityMapper
+
 		UserEntity userEntity = new UserEntity();
 		when(userEntityMapper.toDto(any(UserEntity.class))).thenReturn(new UserEntitydto());
-		// Mocking the behavior of userentityRepository.findById
+
 		Long id = 1L;
 		when(userEntityRepository.findById(id)).thenReturn(Optional.of(userEntity));
 
-		// Testing the findById method
 		UserEntitydto result = userEntityService.findById(id);
 
-		// Perform the test and assertions
 		assertNotNull(result);
 	}
 
@@ -105,32 +99,82 @@ public class UserEntityServiceImplTest {
 	@Test
 	public void testSaveUserEntity() {
 
-		UserEntitydto userEntitydto = new UserEntitydto();
-		userEntitydto.setuId(10L);
-		userEntitydto.setUsername("testUser");
-		userEntitydto.setPassword("password");
-		userEntitydto.setUserType(UserType.LEARNER);
-		userEntitydto.setCreatedOn(LocalDateTime.now());
-		userEntitydto.setUpdatedOn(LocalDateTime.now());
+		UserEntitydto userEntityDto = new UserEntitydto();
+		userEntityDto.setUsername("testUser");
+		userEntityDto.setPassword("testPassword");
+		userEntityDto.setUserType(UserType.LEARNER);
 
 		UserEntity userEntity = new UserEntity();
-		userEntity.setuId(10L);
 		userEntity.setUsername("testUser");
-		userEntity.setPassword("password");
+		userEntity.setPassword("testPassword");
 		userEntity.setUserType(UserType.LEARNER);
 		userEntity.setCreatedOn(LocalDateTime.now());
 		userEntity.setUpdatedOn(LocalDateTime.now());
 
-		when(userEntityMapper.toEntity(any(UserEntitydto.class))).thenReturn(userEntity);
+		when(userEntityMapper.toEntity(userEntityDto)).thenReturn(userEntity);
+		when(userEntityRepository.save(userEntity)).thenReturn(userEntity);
+		when(userEntityMapper.toDto(userEntity)).thenReturn(userEntityDto);
 
-		when(userEntityRepository.save(any(UserEntity.class))).thenReturn(userEntity);
+		UserEntitydto savedUserEntity = userEntityService.saveUserEntity(userEntityDto);
 
-		UserEntitydto result = userEntityService.saveUserEntity(userEntitydto);
+		assertEquals(userEntityDto.getUsername(), savedUserEntity.getUsername());
+		assertEquals(userEntityDto.getPassword(), savedUserEntity.getPassword());
+		assertEquals(userEntityDto.getUserType(), savedUserEntity.getUserType());
 
-		verify(userEntityMapper, times(1)).toEntity(userEntitydto);
+		verify(userEntityMapper, times(1)).toEntity(userEntityDto);
 		verify(userEntityRepository, times(1)).save(userEntity);
 
-		assertNotNull(result, "The result should not be null");
-		assertEquals(userEntitydto, result);
+		ArgumentCaptor<UserEntity> userEntityCaptor = ArgumentCaptor.forClass(UserEntity.class);
+		verify(userEntityRepository).save(userEntityCaptor.capture());
+		assertEquals(userEntity.getUsername(), userEntityCaptor.getValue().getUsername());
+		assertEquals(userEntity.getPassword(), userEntityCaptor.getValue().getPassword());
+		assertEquals(userEntity.getUserType(), userEntityCaptor.getValue().getUserType());
+	}
+
+	@Test
+	public void testUpdateUserEntity_UserFound() {
+		// Mock data
+		Long id = 1L;
+		UserEntitydto userDto = new UserEntitydto();
+		UserEntity userEntity = new UserEntity();
+		userEntity = new UserEntity();
+		userEntity.setuId(1L);
+		userEntity.setUsername("testUser");
+		userEntity.setPassword("password");
+		userEntity.setUserType(UserType.ADMIN);
+
+		userDto.setuId(1L);
+		userDto.setUsername("testUser");
+		userDto.setPassword("password");
+		userDto.setUserType(UserType.ADMIN);
+		when(userEntityMapper.toEntity(userDto)).thenReturn(userEntity);
+		when(userEntityRepository.findById(1L)).thenReturn(Optional.of(userEntity));
+		when(userEntityRepository.save(any(UserEntity.class))).thenReturn(userEntity);
+		when(userEntityMapper.toDto(userEntity)).thenReturn(userDto);
+
+		UserEntitydto updatedDto = userEntityService.updateUserEntity(userDto, 1L);
+
+		assertNotNull(updatedDto);
+		verify(userEntityRepository).findById(1L);
+		verify(userEntityRepository).save(any(UserEntity.class));
+		verify(userEntityMapper, times(2)).toDto(userEntity);
+	}
+
+	@Test
+	public void testUpdateUserEntity_UserNotFound() {
+		// Mock data
+		Long id = 1L;
+		UserEntitydto userDto = new UserEntitydto();
+		Optional<UserEntity> userOptional = Optional.empty();
+		when(userEntityRepository.findById(id)).thenReturn(userOptional);
+
+		// Test and verify
+		assertThrows(EntityNotFoundException.class, () -> {
+			userEntityService.updateUserEntity(userDto, id);
+		});
+		verify(userEntityRepository).findById(id);
+		verify(userEntityRepository, never()).save(any(UserEntity.class));
+		verify(userEntityMapper, never()).toEntity(userDto);
+		verify(userEntityMapper, never()).toDto(any(UserEntity.class));
 	}
 }

@@ -21,6 +21,7 @@ import com.effigo.learning.portal.repository.FavoriteEntityRepository;
 import com.effigo.learning.portal.repository.UserCourseEnrollmentRepository;
 import com.effigo.learning.portal.repository.UserEntityRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -50,7 +51,7 @@ public class UserEntityServiceImpl {
 			UserEntity entity = user.get();
 			return userEntityMapper.toDto(entity);
 		}
-		return null;
+		throw new EntityNotFoundException("User with ID " + id + " not found");
 	}
 
 	public void deleteUserentity(Long id) {
@@ -69,7 +70,7 @@ public class UserEntityServiceImpl {
 		Optional<UserEntitydto> checkExistinguser = Optional.ofNullable(findById(id));
 		if (!checkExistinguser.isPresent()) {
 			log.error("user is not present");
-			return null;
+			throw new EntityNotFoundException("User with ID " + id + " not found");
 		}
 		UserEntity userEntity = userEntityMapper.toEntity(userentityrequest);
 		userentityRepository.save(userEntity);
@@ -212,7 +213,7 @@ public class UserEntityServiceImpl {
 		if (Boolean.FALSE.equals(flag)) {
 			FavoriteEntity fav = new FavoriteEntity();
 			fav.setCourseId(course);
-			fav.setUId(user);
+			fav.setuId(user);
 			favoriteentity.save(fav);
 			return "favorite added";
 		} else {

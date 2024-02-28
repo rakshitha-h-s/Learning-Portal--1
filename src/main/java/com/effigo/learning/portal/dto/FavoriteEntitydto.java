@@ -45,4 +45,20 @@ public class FavoriteEntitydto implements Serializable {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
 		return updatedOn.format(formatter);
 	}
+
+	public Long getfId() {
+		return fId;
+	}
+
+	public void setfId(Long fId) {
+		this.fId = fId;
+	}
+
+	public UserEntity getuId() {
+		return uId;
+	}
+
+	public void setuId(UserEntity uId) {
+		this.uId = uId;
+	}
 }

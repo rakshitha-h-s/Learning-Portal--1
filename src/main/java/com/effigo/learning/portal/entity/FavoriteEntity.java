@@ -27,6 +27,22 @@ import lombok.NoArgsConstructor;
 @Builder
 @Table(name = "favorite_entity")
 public class FavoriteEntity {
+	public Long getfId() {
+		return fId;
+	}
+
+	public void setfId(Long fId) {
+		this.fId = fId;
+	}
+
+	public UserEntity getuId() {
+		return uId;
+	}
+
+	public void setuId(UserEntity uId) {
+		this.uId = uId;
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "f_id")
