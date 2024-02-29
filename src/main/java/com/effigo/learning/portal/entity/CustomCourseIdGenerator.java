@@ -17,18 +17,17 @@ public class CustomCourseIdGenerator implements IdentifierGenerator {
 		rowCount = count != null ? count.intValue() : 0;
 		return "course-0" + (++rowCount);
 	}
+
 }
 
 class CustomCatIdGenerator1 implements IdentifierGenerator {
-
 	@Override
 	public Serializable generate(SharedSessionContractImplementor session, Object object) {
 		int rowCount;
 		NativeQuery<Number> query = session
-				.createNativeQuery("SELECT MAX(CAST(SUBSTRING(category_id,5)AS int) FROM category_entity");
+				.createNativeQuery("SELECT MAX(CAST(SUBSTRING(category_id, 5) AS int)) FROM category_entity");
 		Number count = query.uniqueResult();
 		rowCount = count != null ? count.intValue() : 0;
 		return "cat-" + (++rowCount);
 	}
-
 }

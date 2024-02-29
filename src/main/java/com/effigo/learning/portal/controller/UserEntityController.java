@@ -3,6 +3,7 @@ package com.effigo.learning.portal.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -76,8 +77,8 @@ public class UserEntityController {
 	public CourseEntitydto updateCourseEntityResponse(@RequestBody CourseEntitydto userrequest,
 			@PathVariable("usertype") UserType usertype, @RequestParam("id") Long id,
 			@RequestParam("username") String username, @RequestParam("password") String password,
-			@PathVariable("courseid") String courseid) {
-		return userService.updateCourseEntity1(userrequest, usertype, id, username, password, courseid);
+			@PathVariable("courseid") String courseid) throws NotFoundException {
+		return userService.updateCourse(userrequest, usertype, id, username, password, courseid);
 	}
 
 	@PostMapping("/addfav/{usertype}/{course_id}")
